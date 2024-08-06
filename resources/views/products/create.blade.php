@@ -6,26 +6,29 @@
         @csrf
     <div class ="form-row">
         <label for="">Title</label>
-        <input type="text" class = "form-control" name="title">
+        <input type="text" class = "form-control" name="title" value="{{ old('title')}}">
     </div>
     <div class ="form-row">
         <label for="">Description</label>
-        <input type="text" class = "form-control" name="description">
+        <input type="text" class = "form-control" name="description" value="{{ old('description')}}">
     </div>
     <div class ="form-row">
         <label for="">Price</label>
-        <input type="number" class = "form-control" name="price">
+        <input type="number" class = "form-control" name="price" value="{{ old('price')}}">
     </div>
     <div class ="form-row">
         <label for="">Stock</label>
-        <input type="number" class = "form-control" name="stock" min="0">
+        <input type="number" class = "form-control" name="stock" min="0" value="{{ old('stock')}}">
     </div>
     <div class ="form-row">
         <label for="">Status</label>
-       <select name="status" id="" class="custom-select" required="">
+       <select name="status" id="" class="custom-select" >
         <option value="" selected>Select..</option>
-        <option value="available" >Available</option>
-        <option value="unavailable" >Unavailable</option>
+       
+        <option value="available" {{ old('status') == 'available' ? 'selected' : '' }}>Available</option>
+        <option value="unavailable" {{ old('status') == 'unavailable' ? 'selected' : '' }}>Unavailable</option>
+
+        
        </select>
     </div>
     <div>
