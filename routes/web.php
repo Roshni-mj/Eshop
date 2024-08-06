@@ -10,7 +10,7 @@ Route::get('products', [ProductController::class, 'index'])->name('products.inde
 Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
 Route::get('products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-Route::get('products', [ProductController::class, 'store'])->name('products.store');
+// Route::get('products', [ProductController::class, 'store'])->name('products.store');
 route::match(['put','patch'],'products/{product}',[ProductController::class, 'update'])->name('products.update');
 Route::delete('products/{product}', [ProductController::class, 'delete'])->name('products.delete');
 // route::get('products',function(){
