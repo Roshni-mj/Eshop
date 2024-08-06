@@ -14,7 +14,7 @@ Route::get('products/{product}', [ProductController::class, 'show'])->name('prod
 Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
 // Route::get('products', [ProductController::class, 'store'])->name('products.store');
 route::match(['put','patch'],'products/{product}',[ProductController::class, 'update'])->name('products.update');
-Route::delete('products/{product}', [ProductController::class, 'delete'])->name('products.delete');
+Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
 // route::get('products',function(){
 //     return 'This is the list of products';
 
