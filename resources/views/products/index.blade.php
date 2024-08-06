@@ -2,6 +2,9 @@
 @section('content')
 
     <h1>List of products</h1>
+
+    <a class="btn btn-success" href="{{route('products.create')}}">Create</a>
+
     {{-- @if(empty($product)) --}} 
   
     @empty ($products)
@@ -19,6 +22,7 @@
             <th>Price</th>
             <th>Stock</th>
             <th>Status</th>
+            <th>Action</th>
          
 
         </thead>
@@ -31,6 +35,10 @@
                 <td>{{$pro->price}}</td>
                 <td>{{$pro->stock}}</td>
                 <td>{{$pro->status}}</td>
+                <td>
+                  <a class="btn btn-link" href="{{route('products.show',['product'=> $pro->id])}}">Show</a>
+                  <a class="btn btn-link" href="{{route('products.edit',['product'=> $pro->id])}}">Edit</a>
+                </td>
             </tr>
            @endforeach
         </tbody>
