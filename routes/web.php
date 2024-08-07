@@ -48,3 +48,6 @@ Route::delete('products/{product}', [ProductController::class, 'destroy'])->name
 
 // route::delete('products/{product}',function ($product){
 // })->name('product.destroy');
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
