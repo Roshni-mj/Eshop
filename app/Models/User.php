@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        // 'admin_since',
     ];
 
     /**
@@ -44,4 +45,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    protected $dates = [
+        'admin_since',
+    ];
 }

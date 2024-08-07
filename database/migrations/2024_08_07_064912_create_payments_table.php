@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
+            $table->float('amount')->unsigned();
+            $table->timestamp('payed_at')->nullable();
             $table->timestamps();
         });
     }
