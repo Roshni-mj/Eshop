@@ -63,7 +63,7 @@ class ProductController extends Controller
     }
     // ---------------------------------show product-------------------------------------------
 
-    public function show($product)
+    public function show( $product)
     {
         // $product = DB::table('products')->where('id',$product)->get();
         // $product = DB::table('products')->where('id',$product)->first();
@@ -103,7 +103,7 @@ class ProductController extends Controller
     
 
     // ----------------------------------------delete product----------------------
-    public function destroy($product)
+    public function delete($product)
     {
         $product = Product::findOrFail($product);
         $product->delete();
