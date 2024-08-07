@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
+// use Illuminate\Http\Request;
 use DB;
 
 class ProductController extends Controller
@@ -14,6 +15,9 @@ class ProductController extends Controller
         $this->middleware('auth');
         // $this->middleware('auth')->except(['index','show']);
     }
+
+   
+
     // -------------------------------------view product---------------------------
     public function index()
     {
@@ -28,29 +32,22 @@ class ProductController extends Controller
         return view('products.create');
     }
 
-    public function store()
+    public function store(ProductRequest  $request)
     {
-        // $product = Product::create([
-        //     'title'=> request()->title,
-        //     'description' => request()->description,
-        //     'price' => request()->price,
-        //     'status'=> request()->status,
-        //     'stock' => request()->stock,
-        // ]);
-
-        $rules = [
-            'title' =>['required', 'max:255'],
-            'description' =>['required','max:1000'],
-            'price' =>['required','min:1'],
-            'stock' =>['required','min:0'],
-            'status' =>['required','in:available,unavailable'],
-        ];
-        request()->validate($rules);
-        if (request()->stock == 0 && request()->status == 'available')
-        {
-            // session()->flash('error','If available must have stock');
-            return redirect()->back()->withInput(request()->all())->withErrors('If available must have stock');
-        }
+        
+        // $rules = [
+        //     'title' =>['required', 'max:255'],
+        //     'description' =>['required','max:1000'],
+        //     'price' =>['required','min:1'],
+        //     'stock' =>['required','min:0'],
+        //     'status' =>['required','in:available,unavailable'],
+        // ];
+        // request()->validate($rules);
+        // if (request()->stock == 0 && request()->status == 'available')
+        // {
+        //     // session()->flash('error','If available must have stock');
+        //     return redirect()->back()->withInput(request()->all())->withErrors('If available must have stock');
+        // }
         $product = Product::create(request()->all());
         // session()->flash('success',"new product is created");
 
@@ -82,16 +79,16 @@ class ProductController extends Controller
          return view ("products.edit")->with(['product'=> $product,]);
     }
     
-    public function update($product)
+    public function update(ProductRequest  $request,Product $product)
     {
-        $rules = [
-            'title' =>['required', 'max:255'],
-            'description' =>['required','max:1000'],
-            'price' =>['required','min:1'],
-            'stock' =>['required','min:0'],
-            'status' =>['required','in:available,unavailable'],
-        ];
-        request()->validate($rules);
+        // $rules = [
+        //     'title' =>['required', 'max:255'],
+        //     'description' =>['required','max:1000'],
+        //     'price' =>['required','min:1'],
+        //     'stock' =>['required','min:0'],
+        //     'status' =>['required','in:available,unavailable'],
+        // ];
+        // request()->validate($rules);
         $product = Product::findOrFail($product);
         $product->update(request()->all());
         
