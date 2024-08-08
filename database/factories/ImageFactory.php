@@ -30,4 +30,10 @@ class ImageFactory extends Factory
            'path' => "img/user/{$filename}",
         ]);
     }
+
+
+
+
+
+
 }
