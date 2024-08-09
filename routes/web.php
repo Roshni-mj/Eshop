@@ -1,6 +1,9 @@
 <?php
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductCartController;
+use App\Http\Controllers\CartController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -18,6 +21,8 @@ Route::get('/', [HomeController::class, 'welcome'])->name('welcome');
 // route::match(['put','patch'],'products/{product}',[ProductController::class, 'update'])->name('products.update');
 // Route::delete('products/{product}', [ProductController::class, 'delete'])->name('products.delete');
  Route::resource('products', ProductController::class);
+ Route::resource('carts', CartController::class)->only(['index']);
+ Route::resource('products.carts', ProductCartController::class)->only(['store','destroy']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -1,6 +1,16 @@
-<td>{{$product->id}}</td>
-<td>{{$product->title}}</td>
-<td>{{$product->description}}</td>
-<td>{{$product->price}}</td>
-<td>{{$product->stock}}</td>
-<td>{{$product->status}}</td>
+
+
+<div class="card">
+
+    <img class="card-img-top" src="{{ asset ($product->images->first()->path)}}" height="150px;">
+    <div class="card-body">
+        <h4 class="text-right">$ {{$product->price}}</h4>
+        <h5 class="card-title">{{$product->title}}</h5>
+        <p class ="card-text">{{$product->description}}</p>
+        <p class ="card-text">Stock : {{$product->stock}}</p>
+        <form class="d-inline" method="POST" action="{{route('products.carts.store',['product'=>$product->id])}}">
+            @csrf
+            <button class="btn btn-success" type="submit">Add to Cart</button>
+        </form>
+    </div>
+</div>
