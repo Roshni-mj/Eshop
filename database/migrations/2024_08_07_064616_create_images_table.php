@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('images', function (Blueprint $table) {
             $table->id();
             $table->string('path');
-            
+            $table->string('imageable_type')->nullable(); // or default value if needed
+            $table->unsignedBigInteger('imageable_id')->nullable(); // assuming it's part of a polymorphic relationship
             $table->timestamps();
-            $table->morphs('imageables'); // Creates imageable_id and imageable_type columns
         });
+        
         
     }
 
