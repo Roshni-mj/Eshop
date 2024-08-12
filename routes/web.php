@@ -21,8 +21,8 @@ Route::post('store', [OrderController::class, 'store'])->name('store');
 // Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
 // // Route::get('products', [ProductController::class, 'store'])->name('products.store');
 // route::match(['put','patch'],'products/{product}',[ProductController::class, 'update'])->name('products.update');
-// Route::delete('products/{product}', [ProductController::class, 'delete'])->name('products.delete');
-Route::resource('products', ProductController::class);
+ Route::delete('products/{product}', [ProductController::class, 'delete'])->name('products.delete');
+  Route::resource('products', ProductController::class);
 Route::resource('carts', CartController::class)->only(['index']);
 Route::resource('orders', OrderController::class)->only(['create', 'store']);
 
