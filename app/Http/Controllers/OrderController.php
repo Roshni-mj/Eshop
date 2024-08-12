@@ -3,65 +3,57 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Services\CartService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use Illuminate\Http\Request;
+
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    public $cartService; //dependancy injection\
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function __construct(cartService $cartService)
+    {
+        $this->cartService = $cartService;
+        $this->middleware('auth');
+    }
+   
     public function create()
     {
-        //
+        $cart = $this->cartService->getFromCookie();
+        if(!isset($cart) || $cart->products->isEmpty())
+        {
+            return redirect()->back()
+            ->withErrors('Your cart is empty');
+        }
+        return view('orders.create')->with([
+            'cart' => $cart,
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreOrderRequest $request)
+    public function store(Request $request)
     {
-        //
+        $user = $request->user();
+        $order = $user->orders()->create([
+            'status' => 'Pending',  
+            ]);
+
+        $cart = $this->cartService->getFromCookie();
+        $cartsProductsWithQuantity = $cart
+                            ->products
+                            ->mapWithKeys(function ($product){
+                                $element[$product->id] = ['quantity'=> $product->pivot->quantity];
+                                return $element;
+
+                            });
+                            $order->products()->attach($cartsProductsWithQuantity->toArray());
+        
+                            return redirect()->route('orders.payments.create',['order'=>$order->id]);
+
+       
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Order $order)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateOrderRequest $request, Order $order)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
-    {
-        //
-    }
+    
 }
