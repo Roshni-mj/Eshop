@@ -19,7 +19,6 @@ class ProductCartController extends Controller
     }
 
 
-
     public function store(Request $request, Product $product)
     {
         // $cart = Cart::create();
@@ -31,14 +30,19 @@ class ProductCartController extends Controller
         $cart->products()->syncWithoutDetaching([
             $product->id => ['quantity' => $quantity + 1],
         ]);
-        $cookie = Cookie::make('cart',$cart->id, 7 * 24 * 60);
+        $cookie = $this->cartService->makeCookie($cart); 
+
         return redirect()->back()->cookie($cookie);
     }
 
 
     public function destroy(Product $product, Cart $cart)
     {
-        
+       $cart->products()->detach($product->id);
+
+       $cookie = $this->cartService->makeCookie($cart);
+
+       return redirect()->back()->cookie($cookie);
     }
 
     public function getFromCookieOrCreate()

@@ -3,7 +3,7 @@
 <h1>Your Cart</h1>
 @if ($cart->products->isEmpty())
     <div class ="alert alert-warning">
-       tYour cart  is empty
+       Your cart  is empty
     </div>
     @else
     <div class="row">
