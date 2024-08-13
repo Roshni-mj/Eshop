@@ -27,7 +27,7 @@ class HomeController extends Controller
     }
     public function welcome()
     {
-       $products = Product::available()->get();
+       $products = Product::all();
         return view ('welcome')->with(['products'=> $products,]);
     }
 }

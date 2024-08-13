@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Image;
+use App\Models\Scopes\AvailableScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,6 +19,13 @@ class Product extends Model
         'stock',
         'status',
     ];
+
+    protected static function booted(): void
+    {
+         static::addGlobalScope(new AvailableScope);
+    }
+
+
 
     public function carts()
     {

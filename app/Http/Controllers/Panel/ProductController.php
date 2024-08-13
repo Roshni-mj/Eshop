@@ -3,25 +3,22 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\PanelProduct;
 use App\Http\Requests\ProductRequest;
-use App\Models\Product;
+use App\Models\Scopes\AvailableScope;
  use Illuminate\Http\Request;
 use DB;
 
 class ProductController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        // $this->middleware('auth')->except(['index','show']);
-    }
+ 
 
    
     // -------------------------------------view product---------------------------
     public function index()
     {
         //  $product = DB::table('products')->get();
-        $products=Product::get(); // $product=Product::all(); 
+        $products=PanelProduct::all(); // $product=Product::all(); 
         return view ('products.index')->with(['products'=> $products]);
     }
     // ------------------------create product-------------------------------------
@@ -47,7 +44,7 @@ class ProductController extends Controller
         //     // session()->flash('error','If available must have stock');
         //     return redirect()->back()->withInput(request()->all())->withErrors('If available must have stock');
         // }
-        $product = Product::create(request()->all());
+        $product = PanelProduct::create(request()->all());
         // session()->flash('success',"new product is created");
 
         
@@ -59,7 +56,7 @@ class ProductController extends Controller
     }
     // ---------------------------------show product-------------------------------------------
 
-    public function show(product $product)
+    public function show(PanelProduct $product)
     {
         // $product = DB::table('products')->where('id',$product)->get();
         // $product = DB::table('products')->where('id',$product)->first();
@@ -70,15 +67,15 @@ class ProductController extends Controller
     }
 
     // -------------------------------------------------edit product----------------------------
-    public function edit($product)
+    public function edit(PanelProduct $product)
     {
         // return "Showing the form to edit the products of {$product} from controller ";
-        $product = Product::findOrFail($product); // if the product is present, it shows the product details otherwise it shows not found
+        // $product = Product::findOrFail($product); // if the product is present, it shows the product details otherwise it shows not found
        
          return view ("products.edit")->with(['product'=> $product,]);
     }
     
-    public function update(ProductRequest  $request,Product $product)
+    public function update(ProductRequest  $request,ProPanelProductduct $product)
     {
         // $rules = [
         //     'title' =>['required', 'max:255'],
@@ -99,7 +96,7 @@ class ProductController extends Controller
     
 
     // ----------------------------------------delete product----------------------
-    public function destroy(product $product)
+    public function destroy(PanelProduct $product)
     {
         // $product = Product::findOrFail($product);
         $product->delete();

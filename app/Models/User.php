@@ -7,6 +7,8 @@ use App\Models\Image;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Carbon\Carbon;
+
 
 class User extends Authenticatable
 {
@@ -65,6 +67,15 @@ class User extends Authenticatable
 
     public function isAdmin()
     {
-        return $this->admin_since != null && $this->admin_since->lessThanOrEqualTo(now());
+        // return $this->admin_since != null && $this->admin_since->lessThanOrEqualTo(now());
+        if (empty($this->admin_since)) {
+            return false;
+        }
+
+        // Convert the 'admin_since' string to a Carbon instance
+        $adminSince = Carbon::parse($this->admin_since);
+
+        // Compare the date to the current date
+        return $adminSince->lessThanOrEqualTo(Carbon::now());
     }
 }
