@@ -32,7 +32,7 @@ Route::resource('orders.payments', OrderPaymentController::class)->only(['create
 Route::resource('products.carts', ProductCartController::class)->only(['store','destroy']);
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 Route::middleware(['web', 'auth', 'isadmin'])

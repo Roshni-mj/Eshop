@@ -4,7 +4,14 @@ use App\Models\Cart;
 use Illuminate\Support\Facades\Cookie;
 class CartService
 {
-    protected $cookieName = 'cart';
+    protected $cookieName;
+    protected $cookieExpiration;
+
+    public function __construct()
+    {
+        $this->cookieName = config('cart.cookie.name');
+        $this->cookieExpiration = config('cart.cookie.expiration');
+    }
 
     public function getFromCookie()
     {
@@ -24,16 +31,28 @@ class CartService
 
     public function makeCookie(cart $cart)
     {
-        return   Cookie::make($this->cookieName,$cart->id, 7 * 24 * 60);
+        return   Cookie::make($this->cookieName,$cart->id, $this->cookieExpiration);
     }
 
     public function countProducts()
     {
         $cart = $this->getFromCookie();
-        if ($cart != null)
-        {
-            return $cart->products->pluck('pivot.quantity')->sum();
+
+        if ($cart && $cart instanceof Cart) {
+            // Ensure the relationship is correctly loaded
+            $products = $cart->products; 
+
+            // Check if $products is a collection and access pivot quantity
+            if ($products) {
+                return $products->pluck('pivot.quantity')->sum();
+            }
         }
-        return 0;
+        // $cart = $this->getFromCookie();
+        
+        // if ($cart != null)
+        // {
+        //     return $cart->products->pluck('pivot.quantity')->sum();
+        // }
+         return 0;
     }
 }

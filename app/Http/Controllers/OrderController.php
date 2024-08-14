@@ -8,7 +8,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
 {
@@ -35,22 +36,32 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $user = $request->user();
-        $order = $user->orders()->create([
-            'status' => 'Pending',  
-            ]);
+        return DB::transaction(function() use($request){
+            $user = $request->user();
+            $order = $user->orders()->create([
+                'status' => 'Pending',  
+                ]);
 
-        $cart = $this->cartService->getFromCookie();
-        $cartsProductsWithQuantity = $cart
+            $cart = $this->cartService->getFromCookie();
+            $cartsProductsWithQuantity = $cart
                             ->products
                             ->mapWithKeys(function ($product){
+                                $quantity = $product->pivot->quantity;
+                                if($product->stock < $quantity)
+                                    {
+                                        throw ValidationException::withMessages([
+                                            'cart' => "There is not enough stock for the quantity you required of {$product->title}",
+                                        ]);
+                                    }
+                                    $product->decrement('stock',$quantity);
                                 $element[$product->id] = ['quantity'=> $product->pivot->quantity];
                                 return $element;
 
                             });
-                            $order->products()->attach($cartsProductsWithQuantity->toArray());
-        
-                            return redirect()->route('orders.payments.create',['order'=>$order->id]);
+            $order->products()->attach($cartsProductsWithQuantity->toArray());
+
+            return redirect()->route('orders.payments.create',['order'=>$order->id]);
+        }, 5);
 
        
     }

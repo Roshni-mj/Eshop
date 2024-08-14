@@ -18,7 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         //  $product = DB::table('products')->get();
-        $products=PanelProduct::all(); // $product=Product::all(); 
+        $products=PanelProduct::without('images')->get(); // $product=Product::all(); 
         return view ('products.index')->with(['products'=> $products]);
     }
     // ------------------------create product-------------------------------------

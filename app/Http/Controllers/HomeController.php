@@ -27,6 +27,8 @@ class HomeController extends Controller
     }
     public function welcome()
     {
+        // \DB::connection()->enableQueryLog();
+        
        $products = Product::all();
         return view ('welcome')->with(['products'=> $products,]);
     }
