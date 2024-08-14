@@ -3,14 +3,14 @@
 namespace App\Models;
 use App\Models\Order;
 use App\Models\Image;
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Carbon\Carbon;
 
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -77,5 +77,10 @@ class User extends Authenticatable
 
         // Compare the date to the current date
         return $adminSince->lessThanOrEqualTo(Carbon::now());
+    }
+
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] =  bcrypt($password);
     }
 }
