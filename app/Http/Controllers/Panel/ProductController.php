@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\PanelProduct;
 use App\Http\Requests\ProductRequest;
 use App\Models\Scopes\AvailableScope;
+use Illuminate\Support\Facades\File;
+
  use Illuminate\Http\Request;
 use DB;
 
@@ -30,6 +32,7 @@ class ProductController extends Controller
 
     public function store(ProductRequest  $request)
     {
+        // dd($request->validated());
         
         // $rules = [
         //     'title' =>['required', 'max:255'],
@@ -45,6 +48,12 @@ class ProductController extends Controller
         //     return redirect()->back()->withInput(request()->all())->withErrors('If available must have stock');
         // }
         $product = PanelProduct::create(request()->all());
+        foreach ($request->images as $image)
+        {
+            $product->images()->create([
+                'path' => 'images/'. $image->store('products','images'),
+            ]);
+        }
         // session()->flash('success',"new product is created");
 
         
@@ -75,8 +84,24 @@ class ProductController extends Controller
          return view ("products.edit")->with(['product'=> $product,]);
     }
     
-    public function update(ProductRequest  $request,ProPanelProductduct $product)
+    public function update(ProductRequest  $request,PanelProduct $product)
     {
+        $product->update($request->validated());
+        if($request->hasFile('images'))
+        {
+            foreach ($product->images as $image) 
+            {
+                $path = storage_path("app/public/{$image->path}");
+                File::delete($path);
+                $image->delete();
+            }
+            foreach ($request->images as $image)
+            {
+                $product->images()->create([
+                    'path' => 'images/'. $image->store('products','images'),
+                ]);
+            }
+        }
         // $rules = [
         //     'title' =>['required', 'max:255'],
         //     'description' =>['required','max:1000'],
@@ -85,8 +110,8 @@ class ProductController extends Controller
         //     'status' =>['required','in:available,unavailable'],
         // ];
         // request()->validate($rules);
-        $product = Product::findOrFail($product);
-        $product->update(request()->all());
+        // $product = Product::findOrFail($product);
+        // $product->update(request()->all());
         
         // return $product;
         // return redirect()->back(); //redirect to previouse location

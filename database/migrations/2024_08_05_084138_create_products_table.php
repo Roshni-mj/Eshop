@@ -18,7 +18,7 @@ return new class extends Migration
             $table->float('price')->unsigned();
             $table->integer('stock')->unsigned();
             $table->string('status')->default('unavialable');
-            
+            $table->SoftDeletes();
             $table->timestamps();
         });
     }

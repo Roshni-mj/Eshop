@@ -2,7 +2,7 @@
 @section('content')
 
     <h1>Create products</h1>
-    <form method ="POST" action="{{ route('products.update',['product' => $product->id])}} ">
+    <form method ="POST" action="{{ route('products.update',['product' => $product->id])}} " enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -31,6 +31,16 @@
 
       
        </select>
+    </div>
+    <div class="form-row">
+        <label for="" >{{ __('Images') }}</label>
+
+       
+            <div class="custom-file">
+            <input  type="file" class="custom-file-input" name="images[]" accept="images/*" multiple>
+            <!-- <label class="custom-file-label"> Profile image...</label> -->
+            </div>
+       
     </div>
     <div>
         <button type="submit" class="btn btn-primary btn-lg mt-3">Update</button>
