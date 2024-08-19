@@ -5,15 +5,15 @@
         <div class="carousel-inner">
             @foreach($product->images as $image)
                 <div class="carousel-item {{ $loop->first ? 'active' : '' }}">
-                    <img class="d-block w-100 card-img-top" src="{{ asset ($image->path)}}" height="150px;">
+                    <img class="d-block w-150 card-img-top" src="{{ asset ('storage/'.$image->path)}}" height="450px;">
                 </div>
             @endforeach
 
         </div>
-        <a class="carousel-control-prev" href="#carousel{{$product->id}}" role ="button" data-slide="prev">
+        <a class="carousel-control-prev" href="#carousel{{$product->id}}" role ="button" data-bs-target="#carousel{{ $product->id }}" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
         </a>
-        <a class="carousel-control-next" href="#carousel{{$product->id}}" role ="button" data-slide="next">
+        <a class="carousel-control-next" href="#carousel{{$product->id}}" role ="button" data-bs-target="#carousel{{ $product->id }}" data-bs-slide="next">
             <span class="carousel-control-next-icon"></span>
         </a>
     </div>    
